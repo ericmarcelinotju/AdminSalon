@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    //Button Focused Pressed
+    <item
+        android:state_focused="true"
+        android:state_pressed="true"
+        android:drawable="@drawable/kids"
+        />
+
+    //Button Pressed
+    <item
+        android:state_focused="false"
+        android:state_pressed="true"
+        android:drawable="@drawable/kids"
+        />
+
+    //Button default
+    <item
+        android:drawable="@drawable/kids"
+        />
+</selector>
