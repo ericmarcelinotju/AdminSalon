@@ -37,8 +37,6 @@ public class ServiceAdultListFragment extends Fragment {
     private void initViews(View view){
         adultServiceList = (ListView) view.findViewById(R.id.listViewAdultService);
 
-        Log.d(Constants.TAG, services[5].getName());
-
         ServiceAdapter adapter = new ServiceAdapter(getActivity(), R.layout.list_item_service,services);
 
         adultServiceList.setAdapter(adapter);

@@ -69,6 +69,8 @@ public class ServiceAdultInsertFragment extends Fragment {
                 String duration = durasiServiceText.getText().toString();
                 int price = Integer.parseInt(biayaServiceText.getText().toString());
 
+                //validasi
+
                 Service service = new Service();
                 service.setName(name);
                 service.setDuration(duration);
