@@ -1,5 +1,6 @@
 package com.dapurkreasi.ridho_alamsyah.adminsalon.menu_service.adult;
 
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,8 @@ import com.dapurkreasi.ridho_alamsyah.adminsalon.login_register.LoginFragment;
 
 public class ServiceAdultActivity extends AppCompatActivity {
 
+    public Fragment fragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,8 +23,6 @@ public class ServiceAdultActivity extends AppCompatActivity {
     }
 
     private void initFragment(){
-        android.app.Fragment fragment;
-
         fragment = new ServiceAdultInsertFragment();
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
