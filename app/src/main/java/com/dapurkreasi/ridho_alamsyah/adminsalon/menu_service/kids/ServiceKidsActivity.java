@@ -1,0 +1,32 @@
+package com.dapurkreasi.ridho_alamsyah.adminsalon.menu_service.kids;
+
+import android.app.Fragment;
+import android.app.FragmentTransaction;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
+
+import com.dapurkreasi.ridho_alamsyah.adminsalon.R;
+import com.dapurkreasi.ridho_alamsyah.adminsalon.login_register.LoginFragment;
+
+public class ServiceKidsActivity extends AppCompatActivity {
+
+    public Fragment fragment;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_service_kids);
+
+        initFragment();
+    }
+
+    private void initFragment(){
+        fragment = new ServiceKidsInsertFragment();
+
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_frame,fragment);
+        ft.commit();
+    }
+}
