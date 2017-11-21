@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.dapurkreasi.ridho_alamsyah.adminsalon">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -18,13 +18,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".login_register.MainActivity" />
         <activity android:name=".MenuActivity" />
         <activity android:name=".menu_reservation.ReservationActivity" />
         <activity android:name=".menu_service.ServiceActivity" />
         <activity android:name=".menu_service.adult.ServiceAdultActivity" />
+<<<<<<< HEAD
         <activity android:name=".menu_service.kids.ServiceKidsActivity" />
+=======
+        <activity
+            android:name=".menu_promo.PromoActivity"
+            android:label="@string/title_activity_promo"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".menu_promo.InsertPromo" />
+        <activity android:name=".menu_promo.UpdatePromo"></activity>
+>>>>>>> d9d9179afcbb797780bcef408988f629fce08057
     </application>
 
 </manifest>
