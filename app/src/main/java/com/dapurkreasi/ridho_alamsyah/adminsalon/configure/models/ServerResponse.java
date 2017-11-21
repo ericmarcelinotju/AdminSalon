@@ -1,5 +1,6 @@
 package com.dapurkreasi.ridho_alamsyah.adminsalon.configure.models;
 
+import com.dapurkreasi.ridho_alamsyah.adminsalon.configure.table.Promo;
 import com.dapurkreasi.ridho_alamsyah.adminsalon.configure.table.Reservation;
 import com.dapurkreasi.ridho_alamsyah.adminsalon.configure.table.Service;
 import com.dapurkreasi.ridho_alamsyah.adminsalon.configure.table.User;
@@ -17,6 +18,7 @@ public class ServerResponse {
     private User user;
     private Service[] services;
     private Reservation[] reservations;
+    private Promo[] promos;
 
     public String getResult() {
         return result;
@@ -33,4 +35,6 @@ public class ServerResponse {
     public Service[] getServices(){ return services; }
 
     public Reservation[] getReservations(){return reservations;}
+
+    public Promo[] getPromo(){return promos;}
 }
