@@ -23,16 +23,13 @@
         <activity android:name=".menu_reservation.ReservationActivity" />
         <activity android:name=".menu_service.ServiceActivity" />
         <activity android:name=".menu_service.adult.ServiceAdultActivity" />
-<<<<<<< HEAD
         <activity android:name=".menu_service.kids.ServiceKidsActivity" />
-=======
         <activity
             android:name=".menu_promo.PromoActivity"
             android:label="@string/title_activity_promo"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".menu_promo.InsertPromo" />
         <activity android:name=".menu_promo.UpdatePromo"></activity>
->>>>>>> d9d9179afcbb797780bcef408988f629fce08057
     </application>
 
 </manifest>
