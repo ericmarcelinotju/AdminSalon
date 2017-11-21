@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Admin Salon</string>
+    <string name="title_activity_promo">PromoActivity</string>
 </resources>

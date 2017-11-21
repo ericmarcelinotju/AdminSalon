@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:orientation="vertical">
-
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.dapurkreasi.ridho_alamsyah.adminsalon.menu_promo.PromoActivity"
+    tools:showIn="@layout/activity_promo"
+    android:orientation="vertical"
+    >
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Reservation List"
+        android:text="Promo List"
         android:textSize="20dp"
         android:textAlignment="center"
         android:textColor="@android:color/holo_blue_light"
@@ -25,7 +29,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Client"
+            android:text="Promo ID"
             android:layout_marginLeft="30dp"
             android:textColor="@android:color/black"
             android:textAlignment="center"
@@ -33,35 +37,19 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Service"
-            android:layout_marginLeft="40dp"
-            android:textColor="@android:color/black"
-            android:textAlignment="center"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Service Date"
+            android:text="Promo"
             android:layout_marginLeft="40dp"
             android:textColor="@android:color/black"
             android:textAlignment="center"
             />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Status"
-            android:layout_marginLeft="40dp"
-            android:textColor="@android:color/black"
-            android:textAlignment="center"
-            />
 
 
     </LinearLayout>
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/lstReservation"
+        android:id="@+id/lstPromo"
         >
 
 
