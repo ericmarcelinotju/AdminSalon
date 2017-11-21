@@ -13,8 +13,10 @@ public class Constants {
     public static final String CHANGE_PASSWORD_OPERATION = "chgPass";
     public static final String INSERT_SERVICE_OPERATION = "insert_service";
     public static final String GET_SERVICE_OPERATION = "get_service";
+    public static final String GET_RESERVATION_OPERATION = "get_reservation";
     public static final String DELETE_SERVICE_OPERATION = "delete_service";
     public static final String UPDATE_SERVICE_OPERATION = "update_service";
+    public static final String GET_PROMO_OPERATION = "get_promo";
 
     public static final String SUCCESS = "success";
     public static final String FAILURE = "failure";

@@ -39,6 +39,15 @@
             android:background="?android:attr/selectableItemBackground"
             app:srcCompat="@drawable/adminservice" />
 
+
+        <ImageButton
+            android:id="@+id/btn_promo"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginTop="30dp"
+            android:background="?android:attr/selectableItemBackground"
+            app:srcCompat="@drawable/btn_promotion" />
+
         <ImageButton
             android:id="@+id/btn_logout"
             android:layout_width="match_parent"

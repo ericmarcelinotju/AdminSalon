@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.dapurkreasi.ridho_alamsyah.adminsalon.login_register.MainActivity;
+import com.dapurkreasi.ridho_alamsyah.adminsalon.menu_promo.PromoActivity;
 import com.dapurkreasi.ridho_alamsyah.adminsalon.menu_reservation.ReservationActivity;
 import com.dapurkreasi.ridho_alamsyah.adminsalon.menu_service.ServiceActivity;
 
@@ -24,6 +25,7 @@ public class MenuActivity extends AppCompatActivity {
         ImageButton buttonReservation = (ImageButton) findViewById(R.id.btn_reservation);
         ImageButton buttonService = (ImageButton) findViewById(R.id.btn_service);
         ImageButton buttonLogout = (ImageButton) findViewById(R.id.btn_logout);
+        ImageButton buttonPromo = (ImageButton) findViewById(R.id.btn_promo);
 
         buttonReservation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,6 +38,13 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MenuActivity.this, ServiceActivity.class));
+            }
+        });
+
+        buttonPromo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MenuActivity.this, PromoActivity.class));
             }
         });
 
