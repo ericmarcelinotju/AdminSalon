@@ -8,6 +8,7 @@ import android.widget.ImageButton;
 
 import com.dapurkreasi.ridho_alamsyah.adminsalon.R;
 import com.dapurkreasi.ridho_alamsyah.adminsalon.menu_service.adult.ServiceAdultActivity;
+import com.dapurkreasi.ridho_alamsyah.adminsalon.menu_service.kids.ServiceKidsActivity;
 
 /**
  * Created by Ridho_Alamsyah on 29/06/2017.
@@ -33,7 +34,7 @@ public class ServiceActivity extends AppCompatActivity {
         buttonServiceKids.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startActivity(new Intent(ServiceActivity.this, ServiceKidsActivity.class));
+                startActivity(new Intent(ServiceActivity.this, ServiceKidsActivity.class));
             }
         });
 

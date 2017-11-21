@@ -1,4 +1,4 @@
-package com.dapurkreasi.ridho_alamsyah.adminsalon.menu_service.adult;
+package com.dapurkreasi.ridho_alamsyah.adminsalon.menu_service.kids;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -30,7 +30,7 @@ import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ServiceAdultInsertFragment extends Fragment {
+public class ServiceKidsInsertFragment extends Fragment {
 
     private ProgressBar progressBar;
 
@@ -44,7 +44,7 @@ public class ServiceAdultInsertFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.activity_service_adult_insert,container,false);
+        View view = inflater.inflate(R.layout.activity_service_kids_insert,container,false);
         initViews(view);
         return view;
     }
@@ -75,7 +75,7 @@ public class ServiceAdultInsertFragment extends Fragment {
                 service.setName(name);
                 service.setDuration(duration);
                 service.setPrice(price);
-                service.setType("Adult");
+                service.setType("Kids");
 
                 proccessInsert(service);
             }
@@ -131,12 +131,12 @@ public class ServiceAdultInsertFragment extends Fragment {
 
         RequestInterface requestInterface = retrofit.create(RequestInterface.class);
 
-        Service adult = new Service();
-        adult.setType("Adult");
+        Service kids = new Service();
+        kids.setType("Kids");
 
         ServerRequest request = new ServerRequest();
         request.setOperation(Constants.GET_SERVICE_OPERATION);
-        request.setTable(adult);
+        request.setTable(kids);
         Call<ServerResponse> response = requestInterface.operation(request);
 
         response.enqueue(new Callback<ServerResponse>() {
@@ -145,7 +145,7 @@ public class ServiceAdultInsertFragment extends Fragment {
 
                 ServerResponse resp = response.body();
 
-                ServiceAdultListFragment fragment = new ServiceAdultListFragment();
+                ServiceKidsListFragment fragment = new ServiceKidsListFragment();
                 fragment.setServices(resp.getServices());
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.fragment_frame,fragment);

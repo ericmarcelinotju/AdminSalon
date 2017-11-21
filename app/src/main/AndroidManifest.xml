@@ -24,7 +24,7 @@
         <activity android:name=".menu_reservation.ReservationActivity" />
         <activity android:name=".menu_service.ServiceActivity" />
         <activity android:name=".menu_service.adult.ServiceAdultActivity" />
-
+        <activity android:name=".menu_service.kids.ServiceKidsActivity" />
     </application>
 
 </manifest>
