@@ -17,6 +17,9 @@ public class Constants {
     public static final String DELETE_SERVICE_OPERATION = "delete_service";
     public static final String UPDATE_SERVICE_OPERATION = "update_service";
     public static final String GET_PROMO_OPERATION = "get_promo";
+    public static final String INSERT_PROMO_OPERATION = "insert_promo";
+    public static final String UPDATE_PROMO_OPERATION = "update_promo";
+    public static final String DELETE_PROMO_OPERATION = "delete_promo";
 
     public static final String SUCCESS = "success";
     public static final String FAILURE = "failure";

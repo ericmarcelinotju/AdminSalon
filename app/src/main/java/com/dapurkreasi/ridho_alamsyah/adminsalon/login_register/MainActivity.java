@@ -2,10 +2,12 @@ package com.dapurkreasi.ridho_alamsyah.adminsalon.login_register;
 
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.dapurkreasi.ridho_alamsyah.adminsalon.MenuActivity;
 import com.dapurkreasi.ridho_alamsyah.adminsalon.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -14,8 +16,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initFragment();
-
+        //initFragment();
+        startActivity(new Intent(MainActivity.this,MenuActivity.class));
     }
 
     private void initFragment(){
@@ -27,6 +29,10 @@ public class MainActivity extends AppCompatActivity {
         ft.replace(R.id.fragment_frame,fragment);
         ft.commit();
     }
+
+
+
+
 
     public void onBackPressed(){
         new AlertDialog.Builder(this)

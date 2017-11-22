@@ -1,11 +1,13 @@
 package com.dapurkreasi.ridho_alamsyah.adminsalon.menu_promo;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +18,9 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.dapurkreasi.ridho_alamsyah.adminsalon.MenuActivity;
 import com.dapurkreasi.ridho_alamsyah.adminsalon.R;
 import com.dapurkreasi.ridho_alamsyah.adminsalon.configure.Constants;
 import com.dapurkreasi.ridho_alamsyah.adminsalon.configure.RequestInterface;
@@ -38,12 +42,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class PromoActivity extends AppCompatActivity {
 
     ListView lsPromo;
-
-    String[] idPromo = {"1","2","3"};
-    String[] promoName = {"Anjeng","Babi","Tai"};
-    String[] up = {"Update","Update","Update"};
-    String[] del = {"Delete","Delete","Delete"};
-
+    public static String ide;
+    public static String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,8 +85,9 @@ public class PromoActivity extends AppCompatActivity {
             public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
                 ServerResponse resp = response.body();
 
-                lsPromo = (ListView) findViewById(R.id.lstReservation);
+                lsPromo = (ListView) findViewById(R.id.lstPromo);
                 Promo[] promos = resp.getPromo();
+
                 PromoAdapter pa = new PromoAdapter(getApplication().getApplicationContext(),R.layout.promo_list_layout,promos);
                 lsPromo.setAdapter(pa);
 
@@ -113,9 +114,9 @@ public class PromoActivity extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+        public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
 
-            Promo promo = getItem(position);
+            final Promo promo = getItem(position);
 
             if (convertView == null)
                 convertView  = LayoutInflater.from(getContext()).inflate(R.layout.promo_list_layout, parent, false);
@@ -123,69 +124,93 @@ public class PromoActivity extends AppCompatActivity {
 
             TextView txtPromoID = (TextView) convertView.findViewById(R.id.txtIdPromo);
             TextView txtPromoName = (TextView) convertView.findViewById(R.id.txtPromo);
+            Button btnUp = (Button) convertView.findViewById(R.id.btnUpdate);
+            Button btnDel = (Button) convertView.findViewById(R.id.btnDelete);
 
             String id = String.valueOf( promo.getIdPromo());
 
             txtPromoID.setText(id);
             txtPromoName.setText(promo.getPromo());
+            btnDel.setText("Delete");
+            btnUp.setText("Update");
 
-
-
-            return convertView;
-        }
-
-
-
-    }
-
-
-
-
-    class CustomAdapter extends BaseAdapter
-    {
-
-
-        @Override
-        public int getCount() {
-            return idPromo.length;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            convertView = getLayoutInflater().inflate(R.layout.promo_list_layout,null);
-            TextView txtIDs = (TextView)convertView.findViewById(R.id.txtIdPromo);
-            TextView txtPromos = (TextView) convertView.findViewById(R.id.txtPromo);
-            Button btnUpdate = (Button) convertView.findViewById(R.id.btnUpdate);
-            Button btnDelete = (Button) convertView.findViewById(R.id.btnDelete);
-
-
-            txtIDs.setText(idPromo[position]);
-            txtPromos.setText(promoName[position]);
-            btnUpdate.setText(up[position]);
-            btnDelete.setText(del[position]);
-
-            btnUpdate.setOnClickListener(new View.OnClickListener() {
+            btnUp.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    ide = String.valueOf(promo.getIdPromo());
+                    name = promo.getPromo();
+
+
                     startActivity(new Intent(PromoActivity.this,UpdatePromo.class));
                 }
             });
 
+            btnDel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
+                    AlertDialog.Builder builder = new AlertDialog.Builder(PromoActivity.this)
+                            .setMessage("Are you sure to delete "+ promo.getPromo()+" ?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    processDelete(promo);
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+
+                }
+            });
 
             return convertView;
         }
+
+        private void processDelete(final Promo promo)
+        {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(Constants.BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            RequestInterface requestInterface = retrofit.create(RequestInterface.class);
+
+            ServerRequest request = new ServerRequest();
+            request.setOperation(Constants.DELETE_PROMO_OPERATION);
+            request.setTable(promo);
+            Call<ServerResponse> response = requestInterface.operation(request);
+            response.enqueue(new Callback<ServerResponse>() {
+                @Override
+                public void onResponse(Call<ServerResponse> call, retrofit2.Response<ServerResponse> response) {
+
+                    //PromoAdapter.this.remove(promo);
+                    PromoAdapter.this.remove(promo);
+                    //startActivity(new Intent(PromoActivity.this, MenuActivity.class));
+                }
+
+                @Override
+                public void onFailure(Call<ServerResponse> call, Throwable t) {
+                    Log.d(Constants.TAG,t.getLocalizedMessage());
+                }
+            });
+
+
+        }
+
+
     }
+
+
+
+
+
 
 
 
