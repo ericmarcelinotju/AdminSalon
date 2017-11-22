@@ -1,9 +1,12 @@
 package com.dapurkreasi.ridho_alamsyah.adminsalon.menu_reservation;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,7 +19,9 @@ import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.dapurkreasi.ridho_alamsyah.adminsalon.MenuActivity;
 import com.dapurkreasi.ridho_alamsyah.adminsalon.R;
 import com.dapurkreasi.ridho_alamsyah.adminsalon.configure.Constants;
 import com.dapurkreasi.ridho_alamsyah.adminsalon.configure.RequestInterface;
@@ -39,7 +44,9 @@ public class ReservationActivity extends AppCompatActivity {
 
     public ListView lstReservation;
 
+    static String reserveId;
 
+    //private Reservation reservation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,7 +116,7 @@ public class ReservationActivity extends AppCompatActivity {
             TextView reservationDate = (TextView) convertView.findViewById(R.id.txtReserveDate);
             Button btnResevation = (Button) convertView.findViewById(R.id.btnStatus);
 
-            String id = String.valueOf( reservation.getUser());
+            reserveId = String.valueOf( reservation.getId());
             Date dates =  reservation.getDate();
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -122,8 +129,58 @@ public class ReservationActivity extends AppCompatActivity {
             reservationDate.setText(date);
             btnResevation.setText(reservation.getStatus());
 
+            if (btnResevation.getText().equals("Process"))
+            {
+                btnResevation.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Reservation reservation = new Reservation();
+                        reservation.setId_reservation(Integer.parseInt(reserveId));
+                        reservation.setReservation_status("Done");
+                        processUpdate(reservation);
+                        startActivity(new Intent(ReservationActivity.this, MenuActivity.class));
+                    }
+                });
+            }
+            else
+            {
+                btnResevation.setBackgroundColor(Color.CYAN);
+            }
+
+
             return convertView;
         }
+
+    }
+
+    public void processUpdate(final Reservation reservation)
+    {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Constants.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        RequestInterface requestInterface = retrofit.create(RequestInterface.class);
+
+        ServerRequest request = new ServerRequest();
+        request.setOperation(Constants.UPDATE_RESERVATION_OPERATION);
+        request.setTable(reservation);
+        Call<ServerResponse> response = requestInterface.operation(request);
+        response.enqueue(new Callback<ServerResponse>() {
+            @Override
+            public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
+                ServerResponse resp = response.body();
+                Snackbar.make(findViewById(android.R.id.content), resp.getMessage(), Snackbar.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(Call<ServerResponse> call, Throwable t) {
+
+                Log.d(Constants.TAG,t.getLocalizedMessage());
+                Snackbar.make(findViewById(android.R.id.content), t.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
+            }
+        });
 
     }
 

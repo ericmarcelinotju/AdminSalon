@@ -28,8 +28,11 @@ import com.dapurkreasi.ridho_alamsyah.adminsalon.configure.models.ServerRequest;
 import com.dapurkreasi.ridho_alamsyah.adminsalon.configure.models.ServerResponse;
 import com.dapurkreasi.ridho_alamsyah.adminsalon.configure.table.Promo;
 import com.dapurkreasi.ridho_alamsyah.adminsalon.configure.table.Reservation;
+import com.dapurkreasi.ridho_alamsyah.adminsalon.configure.table.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -87,8 +90,9 @@ public class PromoActivity extends AppCompatActivity {
 
                 lsPromo = (ListView) findViewById(R.id.lstPromo);
                 Promo[] promos = resp.getPromo();
+                ArrayList<Promo> list = new ArrayList<Promo>(Arrays.asList(promos));
 
-                PromoAdapter pa = new PromoAdapter(getApplication().getApplicationContext(),R.layout.promo_list_layout,promos);
+                PromoAdapter pa = new PromoAdapter(getApplication().getApplicationContext(),R.layout.promo_list_layout,list);
                 lsPromo.setAdapter(pa);
 
             }
@@ -109,12 +113,12 @@ public class PromoActivity extends AppCompatActivity {
     {
 
 
-        public PromoAdapter(@NonNull Context context, int resource, @NonNull Promo[] promos) {
+        public PromoAdapter(@NonNull Context context, int resource, @NonNull List<Promo> promos) {
             super(context, resource, promos);
         }
 
         @Override
-        public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
+        public View getView(final int position, View convertView, @NonNull final ViewGroup parent) {
 
             final Promo promo = getItem(position);
 
@@ -140,7 +144,6 @@ public class PromoActivity extends AppCompatActivity {
                     ide = String.valueOf(promo.getIdPromo());
                     name = promo.getPromo();
 
-
                     startActivity(new Intent(PromoActivity.this,UpdatePromo.class));
                 }
             });
@@ -149,7 +152,7 @@ public class PromoActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(PromoActivity.this)
+                    AlertDialog.Builder builder = new AlertDialog.Builder(parent.getContext())
                             .setMessage("Are you sure to delete "+ promo.getPromo()+" ?")
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override

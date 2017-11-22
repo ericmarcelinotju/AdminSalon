@@ -1,5 +1,6 @@
 package com.dapurkreasi.ridho_alamsyah.adminsalon.menu_promo;
 
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.dapurkreasi.ridho_alamsyah.adminsalon.MenuActivity;
 import com.dapurkreasi.ridho_alamsyah.adminsalon.R;
 import com.dapurkreasi.ridho_alamsyah.adminsalon.configure.Constants;
 import com.dapurkreasi.ridho_alamsyah.adminsalon.configure.RequestInterface;
@@ -44,9 +46,6 @@ public class UpdatePromo extends AppCompatActivity {
 
     private void init()
     {
-
-
-
         pbUpdate = (ProgressBar) findViewById(R.id.progress_update_promo);
         txtUpdate = (EditText) findViewById(R.id.txtUpdatePromoName);
         buttonUpdate = (Button) findViewById(R.id.btnUpdatePromo);
@@ -54,9 +53,6 @@ public class UpdatePromo extends AppCompatActivity {
 
         lblPromoID.setText(PromoActivity.ide);
         txtUpdate.setText(PromoActivity.name);
-
-
-
 
         buttonUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,9 +62,11 @@ public class UpdatePromo extends AppCompatActivity {
                 String name = txtUpdate.getText().toString();
                 if(!name.equals(""))
                 {
-                   // promo.setIdPromo(Integer.parseInt(id));
+                    promo = new Promo();
+                    promo.setIdPromo(Integer.parseInt(id));
                     promo.setPromo(name);
                     processUpdate();
+                    startActivity(new Intent(UpdatePromo.this, MenuActivity.class));
 
                 }
 
@@ -112,10 +110,6 @@ public class UpdatePromo extends AppCompatActivity {
             }
         });
 
-    }
-
-    public void setService(Promo promo){
-        this.promo = promo;
     }
 
 
