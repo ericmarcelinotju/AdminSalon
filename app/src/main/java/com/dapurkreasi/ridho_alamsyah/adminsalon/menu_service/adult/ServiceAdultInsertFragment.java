@@ -24,6 +24,7 @@ import com.dapurkreasi.ridho_alamsyah.adminsalon.configure.models.ServerResponse
 import com.dapurkreasi.ridho_alamsyah.adminsalon.configure.table.Service;
 import com.dapurkreasi.ridho_alamsyah.adminsalon.configure.table.User;
 import com.dapurkreasi.ridho_alamsyah.adminsalon.login_register.RegisterFragment;
+import com.dapurkreasi.ridho_alamsyah.adminsalon.menu_promo.InsertPromo;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,7 +50,7 @@ public class ServiceAdultInsertFragment extends Fragment {
         return view;
     }
 
-    private void initViews(View view){
+    private void initViews(final View view){
         progressBar = (ProgressBar) view.findViewById(R.id.progress_insert);
 
         namaServiceText = (EditText) view.findViewById(R.id.et_namaService);
@@ -63,21 +64,32 @@ public class ServiceAdultInsertFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                progressBar.setVisibility(View.VISIBLE);
-
                 String name = namaServiceText.getText().toString();
                 String duration = durasiServiceText.getText().toString();
-                int price = Integer.parseInt(biayaServiceText.getText().toString());
+                String price = biayaServiceText.getText().toString();
 
-                //validasi
+                if(name.equals("")){
+                    Toast.makeText(view.getContext(), "Nama harus diisi!", Toast.LENGTH_SHORT).show();
+                }else if(duration.equals("")){
+                    Toast.makeText(view.getContext(), "Durasi harus diisi", Toast.LENGTH_SHORT).show();
+                }else if(price.equals("")){
+                    Toast.makeText(view.getContext(), "Harga harus diisi", Toast.LENGTH_SHORT).show();
+                }else {
+                    int priceInt = 0;
+                    try{
+                        priceInt = Integer.parseInt(price);
 
-                Service service = new Service();
-                service.setName(name);
-                service.setDuration(duration);
-                service.setPrice(price);
-                service.setType("Adult");
+                        Service service = new Service();
+                        service.setName(name);
+                        service.setDuration(duration);
+                        service.setPrice(priceInt);
+                        service.setType("Adult");
 
-                proccessInsert(service);
+                        proccessInsert(service);
+                    }catch (Exception e){
+                        Toast.makeText(view.getContext(), "Harga harus numerik", Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
         });
 
@@ -90,6 +102,9 @@ public class ServiceAdultInsertFragment extends Fragment {
     }
 
     private void proccessInsert(Service service){
+        
+        progressBar.setVisibility(View.VISIBLE);
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
