@@ -1,8 +1,5 @@
 package com.dapurkreasi.ridho_alamsyah.adminsalon.configure.table;
 
-/**
- * Created by Ridho_Alamsyah on 20/06/2017.
- */
 
 public class User extends Table{
 

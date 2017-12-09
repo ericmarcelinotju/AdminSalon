@@ -1,8 +1,5 @@
 package com.dapurkreasi.ridho_alamsyah.adminsalon.configure.table;
 
-/**
- * Created by Jefry on 11/20/2017.
- */
 
 public class Promo extends Table {
 

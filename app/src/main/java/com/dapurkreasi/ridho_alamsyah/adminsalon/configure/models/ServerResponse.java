@@ -7,9 +7,6 @@ import com.dapurkreasi.ridho_alamsyah.adminsalon.configure.table.User;
 
 import java.util.List;
 
-/**
- * Created by Ridho_Alamsyah on 20/06/2017.
- */
 
 public class ServerResponse {
 

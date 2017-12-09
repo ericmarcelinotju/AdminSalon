@@ -2,10 +2,6 @@ package com.dapurkreasi.ridho_alamsyah.adminsalon.configure.table;
 
 import java.util.Date;
 
-/**
- * Created by Jefry on 11/19/2017.
- */
-
 public class Reservation extends Table{
 
     private int id_reservation;
