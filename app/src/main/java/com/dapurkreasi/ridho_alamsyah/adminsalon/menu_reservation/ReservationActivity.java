@@ -85,8 +85,6 @@ public class ReservationActivity extends AppCompatActivity {
 
                 ServerResponse resp = response.body();
 
-                Toast.makeText(ReservationActivity.this, "TEST", Toast.LENGTH_SHORT).show();
-
                 lstReservation = (ListView) findViewById(R.id.lstReservation);
                 Reservation[] reservations = resp.getReservations();
 
