@@ -4,69 +4,49 @@ import java.util.Date;
 
 public class Reservation extends Table{
 
-    private int id_reservation;
-    private String user_id;
-    private int id_service;
-    private Date date_reservation;
-    private String reservation_status;
-
-    //----------------------------------------------
-    private String nama_service;
-    private String name;
-
-    public String getNamaService() {
-        return nama_service;
-    }
-
-    public void setNama_service(String nama_service) {
-        this.nama_service = nama_service;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setId_reservation(int id_reservation) {
-        this.id_reservation = id_reservation;
-    }
-
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
-    }
-
-    public void setId_service(int id_service) {
-        this.id_service = id_service;
-    }
-
-    public void setDate_reservation(Date date_reservation) {
-        this.date_reservation = date_reservation;
-    }
-
-    public void setReservation_status(String reservation_status) {
-        this.reservation_status = reservation_status;
-    }
+    private int id;
+    private Date date;
+    private String status;
+    private String servicename;
+    private String username;
 
     public int getId() {
-        return id_reservation;
+        return id;
     }
 
-    public String getUser() {
-        return user_id;
-    }
-
-    public int getService() {
-        return id_service;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Date getDate() {
-        return date_reservation;
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public String getStatus() {
-        return reservation_status;
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getServicename() {
+        return servicename;
+    }
+
+    public void setServicename(String servicename) {
+        this.servicename = servicename;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

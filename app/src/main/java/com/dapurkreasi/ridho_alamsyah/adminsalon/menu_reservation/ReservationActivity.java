@@ -29,11 +29,17 @@ import com.dapurkreasi.ridho_alamsyah.adminsalon.configure.models.ServerRequest;
 import com.dapurkreasi.ridho_alamsyah.adminsalon.configure.models.ServerResponse;
 import com.dapurkreasi.ridho_alamsyah.adminsalon.configure.table.Reservation;
 import com.dapurkreasi.ridho_alamsyah.adminsalon.configure.table.Service;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -58,13 +64,16 @@ public class ReservationActivity extends AppCompatActivity {
 
     private void getReservation()
     {
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd HH:mm:sss")
+                .create();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
         RequestInterface requestInterface = retrofit.create(RequestInterface.class);
-
 
         ServerRequest request = new ServerRequest();
         request.setOperation(Constants.GET_RESERVATION_OPERATION);
@@ -76,6 +85,8 @@ public class ReservationActivity extends AppCompatActivity {
 
                 ServerResponse resp = response.body();
 
+                Toast.makeText(ReservationActivity.this, "TEST", Toast.LENGTH_SHORT).show();
+
                 lstReservation = (ListView) findViewById(R.id.lstReservation);
                 Reservation[] reservations = resp.getReservations();
 
@@ -86,15 +97,11 @@ public class ReservationActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ServerResponse> call, Throwable t) {
 
-                Log.d(Constants.TAG,t.getLocalizedMessage());
+                Log.d(Constants.TAG,t.getMessage());
+
             }
         });
-
-
     }
-
-
-
 
     class ReservationAdapter extends ArrayAdapter<Reservation>
     {
@@ -106,7 +113,7 @@ public class ReservationActivity extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
-            Reservation reservation = getItem(position);
+            final Reservation reservation = getItem(position);
 
             if (convertView == null)
                 convertView  = LayoutInflater.from(getContext()).inflate(R.layout.reservation_list_layout, parent, false);
@@ -114,31 +121,27 @@ public class ReservationActivity extends AppCompatActivity {
             TextView clientName = (TextView) convertView.findViewById(R.id.txtClient);
             TextView reservationName = (TextView) convertView.findViewById(R.id.txtReserveName);
             TextView reservationDate = (TextView) convertView.findViewById(R.id.txtReserveDate);
-            Button btnResevation = (Button) convertView.findViewById(R.id.btnStatus);
+            final Button btnResevation = (Button) convertView.findViewById(R.id.btnStatus);
 
-            reserveId = String.valueOf( reservation.getId());
             Date dates =  reservation.getDate();
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
             String date = sdf.format(dates);
 
-            String service = String.valueOf( reservation.getService());
-
-            clientName.setText(reservation.getName());
-            reservationName.setText(reservation.getNamaService());
+            clientName.setText(reservation.getUsername());
+            reservationName.setText(reservation.getServicename());
             reservationDate.setText(date);
             btnResevation.setText(reservation.getStatus());
 
-            if (btnResevation.getText().equals("Process"))
+            if (btnResevation.getText().equals("Pending"))
             {
                 btnResevation.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Reservation reservation = new Reservation();
-                        reservation.setId_reservation(Integer.parseInt(reserveId));
-                        reservation.setReservation_status("Done");
+                        reservation.setStatus("Done");
                         processUpdate(reservation);
-                        startActivity(new Intent(ReservationActivity.this, MenuActivity.class));
+                        btnResevation.setText("Done");
+                        btnResevation.setBackgroundColor(Color.CYAN);
                     }
                 });
             }
@@ -153,7 +156,7 @@ public class ReservationActivity extends AppCompatActivity {
 
     }
 
-    public void processUpdate(final Reservation reservation)
+    public void processUpdate(Reservation reservation)
     {
 
         Retrofit retrofit = new Retrofit.Builder()
