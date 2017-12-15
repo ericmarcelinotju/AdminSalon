@@ -1,45 +1,39 @@
 package com.dapurkreasi.ridho_alamsyah.adminsalon.menu_reservation;
 
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ListAdapter;
+
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dapurkreasi.ridho_alamsyah.adminsalon.MenuActivity;
 import com.dapurkreasi.ridho_alamsyah.adminsalon.R;
 import com.dapurkreasi.ridho_alamsyah.adminsalon.configure.Constants;
 import com.dapurkreasi.ridho_alamsyah.adminsalon.configure.RequestInterface;
 import com.dapurkreasi.ridho_alamsyah.adminsalon.configure.models.ServerRequest;
 import com.dapurkreasi.ridho_alamsyah.adminsalon.configure.models.ServerResponse;
 import com.dapurkreasi.ridho_alamsyah.adminsalon.configure.table.Reservation;
-import com.dapurkreasi.ridho_alamsyah.adminsalon.configure.table.Service;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -48,11 +42,20 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ReservationActivity extends AppCompatActivity {
 
-    public ListView lstReservation;
+    /**
+     * The {@link android.support.v4.view.PagerAdapter} that will provide
+     * fragments for each of the sections. We use a
+     * {@link FragmentPagerAdapter} derivative, which will keep every
+     * loaded fragment in memory. If this becomes too memory intensive, it
+     * may be best to switch to a
+     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
+     */
+    private SectionsPagerAdapter mSectionsPagerAdapter;
 
-    static String reserveId;
-
-    //private Reservation reservation;
+    /**
+     * The {@link ViewPager} that will host the section contents.
+     */
+    private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +63,21 @@ public class ReservationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_reservation);
 
         getReservation();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void getReservation()
@@ -85,13 +103,15 @@ public class ReservationActivity extends AppCompatActivity {
 
                 ServerResponse resp = response.body();
 
-                Toast.makeText(ReservationActivity.this, "TEST", Toast.LENGTH_SHORT).show();
-
-                lstReservation = (ListView) findViewById(R.id.lstReservation);
                 Reservation[] reservations = resp.getReservations();
 
-                ReservationAdapter ra = new ReservationAdapter(getApplication().getApplicationContext(),R.layout.reservation_list_layout,reservations);
-                lstReservation.setAdapter(ra);
+                mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), reservations);
+
+                mViewPager = (ViewPager) findViewById(R.id.container);
+                mViewPager.setAdapter(mSectionsPagerAdapter);
+
+                TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+                tabLayout.setupWithViewPager(mViewPager);
             }
 
             @Override
@@ -103,89 +123,108 @@ public class ReservationActivity extends AppCompatActivity {
         });
     }
 
-    class ReservationAdapter extends ArrayAdapter<Reservation>
-    {
-        public ReservationAdapter(@NonNull Context context, int resource, @NonNull Reservation[] reservations) {
-            super(context, resource, reservations);
+    /**
+     * A placeholder fragment containing a simple view.
+     */
+    public static class PlaceholderFragment extends Fragment {
+        /**
+         * The fragment argument representing the section number for this
+         * fragment.
+         */
+        private Reservation[] reservations;
 
+        public PlaceholderFragment() {
+        }
+
+
+        public void setReservations(Reservation[] reservations){
+            this.reservations = reservations;
+        }
+
+        /**
+         * Returns a new instance of this fragment for the given section
+         * number.
+         */
+        public static PlaceholderFragment newInstance(Reservation[] reservations) {
+            PlaceholderFragment fragment = new PlaceholderFragment();
+            fragment.setReservations(reservations);
+            return fragment;
         }
 
         @Override
-        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_reservation, container, false);
 
-            final Reservation reservation = getItem(position);
+            ListView listView = (ListView) rootView.findViewById(R.id.listReservation);
 
-            if (convertView == null)
-                convertView  = LayoutInflater.from(getContext()).inflate(R.layout.reservation_list_layout, parent, false);
+            ReservationAdapter ra = new ReservationAdapter(rootView.getContext(),R.layout.reservation_list_layout,reservations);
+            listView.setAdapter(ra);
 
-            TextView clientName = (TextView) convertView.findViewById(R.id.txtClient);
-            TextView reservationName = (TextView) convertView.findViewById(R.id.txtReserveName);
-            TextView reservationDate = (TextView) convertView.findViewById(R.id.txtReserveDate);
-            final Button btnResevation = (Button) convertView.findViewById(R.id.btnStatus);
+            return rootView;
+        }
+    }
 
-            Date dates =  reservation.getDate();
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+    /**
+     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
+     * one of the sections/tabs/pages.
+     */
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-            String date = sdf.format(dates);
+        Reservation[] reservations;
 
-            clientName.setText(reservation.getUsername());
-            reservationName.setText(reservation.getServicename());
-            reservationDate.setText(date);
-            btnResevation.setText(reservation.getStatus());
+        PlaceholderFragment[] fragments = new PlaceholderFragment[2];
 
-            if (btnResevation.getText().equals("Pending"))
-            {
-                btnResevation.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        reservation.setStatus("Done");
-                        processUpdate(reservation);
-                        btnResevation.setText("Done");
-                        btnResevation.setBackgroundColor(Color.CYAN);
-                    }
-                });
-            }
-            else
-            {
-                btnResevation.setBackgroundColor(Color.CYAN);
-            }
+        public SectionsPagerAdapter(FragmentManager fm, Reservation[] reservations) {
+            super(fm);
+            this.reservations = reservations;
 
+            Reservation[][] filteredReservations = filterReservation(reservations);
 
-            return convertView;
+            fragments[0] = PlaceholderFragment.newInstance(filteredReservations[0]);
+            fragments[1] = PlaceholderFragment.newInstance(filteredReservations[1]);
         }
 
-    }
+        private Reservation[][] filterReservation(Reservation[] reservation){
+            List<Reservation> pendingList = new ArrayList<>();
+            List<Reservation> doneList = new ArrayList<>();
 
-    public void processUpdate(Reservation reservation)
-    {
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Constants.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        RequestInterface requestInterface = retrofit.create(RequestInterface.class);
-
-        ServerRequest request = new ServerRequest();
-        request.setOperation(Constants.UPDATE_RESERVATION_OPERATION);
-        request.setTable(reservation);
-        Call<ServerResponse> response = requestInterface.operation(request);
-        response.enqueue(new Callback<ServerResponse>() {
-            @Override
-            public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
-                ServerResponse resp = response.body();
-                Snackbar.make(findViewById(android.R.id.content), resp.getMessage(), Snackbar.LENGTH_LONG).show();
+            for (int i = 0 ; i < reservations.length ; i++){
+                if(reservations[i].getStatus().equalsIgnoreCase("PENDING")){
+                    pendingList.add(reservations[i]);
+                }else if(reservations[i].getStatus().equalsIgnoreCase("DONE")){
+                    doneList.add(reservations[i]);
+                }
             }
 
-            @Override
-            public void onFailure(Call<ServerResponse> call, Throwable t) {
+            Reservation[] pendingArr = new Reservation[pendingList.size()];
+            pendingArr = pendingList.toArray(pendingArr);
 
-                Log.d(Constants.TAG,t.getLocalizedMessage());
-                Snackbar.make(findViewById(android.R.id.content), t.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
+            Reservation[] doneArr = new Reservation[doneList.size()];
+            doneArr = doneList.toArray(doneArr);
+
+            return new Reservation[][] {pendingArr, doneArr};
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return fragments[position];
+        }
+
+        @Override
+        public int getCount() {
+            return fragments.length;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return "PENDING";
+                case 1:
+                    return "DONE";
             }
-        });
-
+            return null;
+        }
     }
-
 }
-

@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 import com.dapurkreasi.ridho_alamsyah.adminsalon.login_register.MainActivity;
 import com.dapurkreasi.ridho_alamsyah.adminsalon.menu_promo.PromoActivity;
 import com.dapurkreasi.ridho_alamsyah.adminsalon.menu_reservation.ReservationActivity;
+import com.dapurkreasi.ridho_alamsyah.adminsalon.menu_reservation.ReservationActivity2;
 import com.dapurkreasi.ridho_alamsyah.adminsalon.menu_service.ServiceActivity;
 
 /**

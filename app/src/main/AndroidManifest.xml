@@ -12,15 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".SplashActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".login_register.MainActivity" />
         <activity android:name=".MenuActivity" />
-        <activity android:name=".menu_reservation.ReservationActivity" />
+        <activity android:name=".menu_reservation.ReservationActivity2" />
         <activity android:name=".menu_service.ServiceActivity" />
         <activity android:name=".menu_service.adult.ServiceAdultActivity" />
         <activity android:name=".menu_service.kids.ServiceKidsActivity" />
@@ -29,7 +25,17 @@
             android:label="@string/title_activity_promo"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".menu_promo.InsertPromo" />
-        <activity android:name=".menu_promo.UpdatePromo"></activity>
+        <activity android:name=".menu_promo.UpdatePromo" />
+        <activity
+            android:name=".menu_reservation.ReservationActivity"
+            android:label="@string/title_activity_reservation"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

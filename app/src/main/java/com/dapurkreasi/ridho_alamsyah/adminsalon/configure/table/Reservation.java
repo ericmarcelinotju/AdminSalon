@@ -1,8 +1,9 @@
 package com.dapurkreasi.ridho_alamsyah.adminsalon.configure.table;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Reservation extends Table{
+public class Reservation extends Table implements Serializable{
 
     private int id;
     private Date date;
