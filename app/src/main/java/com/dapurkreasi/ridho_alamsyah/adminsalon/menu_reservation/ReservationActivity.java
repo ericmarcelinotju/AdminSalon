@@ -56,6 +56,7 @@ public class ReservationActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    private ListView lstReservation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +103,8 @@ public class ReservationActivity extends AppCompatActivity {
             public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
 
                 ServerResponse resp = response.body();
+
+                lstReservation = (ListView) findViewById(R.id.lstReservation);
 
                 Reservation[] reservations = resp.getReservations();
 
